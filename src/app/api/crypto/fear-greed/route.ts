@@ -75,7 +75,7 @@ export async function GET() {
     console.error("Error fetching Fear & Greed Index:", error);
 
     // Generate mock historical data
-    const mockHistorical = [];
+    const mockHistorical: { date: string; value: number; classification: string }[] = [];
     for (let i = 30; i >= 0; i--) {
       const date = new Date();
       date.setDate(date.getDate() - i);

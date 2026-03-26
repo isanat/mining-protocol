@@ -83,13 +83,13 @@ export async function GET(request: NextRequest) {
     // Buscar nome de quem indicou e adicionar BRL equivalentes
     const usersWithReferrer = await Promise.all(
       users.map(async (u) => {
-        let referredByName = null;
+        let referredByName: string | null = null;
         if (u.referredBy) {
           const referrer = await db.user.findUnique({
             where: { id: u.referredBy },
             select: { name: true, email: true }
           });
-          referredByName = referrer?.name || referrer?.email;
+          referredByName = referrer?.name || referrer?.email || null;
         }
         return {
           ...u,

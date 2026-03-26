@@ -1470,7 +1470,7 @@ export default function MiningDashboard() {
             
             <Button
               onClick={handleRentMiner}
-              disabled={loading || (user && user.balance < selectedMiner.pricePerDay * rentDays)}
+              disabled={loading || !user || user.balance < selectedMiner.pricePerDay * rentDays}
               className="w-full mobile-button-primary"
             >
               {loading ? (

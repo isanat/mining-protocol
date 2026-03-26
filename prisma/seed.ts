@@ -159,7 +159,6 @@ async function main() {
       password: hashedPassword,
       role: "admin",
       balance: 0,
-      usdtBalance: 0,
       totalMined: 0,
       totalInvested: 0,
     },

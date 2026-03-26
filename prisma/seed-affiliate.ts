@@ -82,7 +82,6 @@ async function main() {
       password: adminPassword,
       role: "admin",
       balance: 0,
-      usdtBalance: 0,
       totalInvested: 0,
       totalMined: 0,
       hasInvested: true,

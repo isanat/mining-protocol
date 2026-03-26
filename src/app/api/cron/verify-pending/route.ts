@@ -8,21 +8,19 @@ const WALLET_ADDRESSES = {
   Polygon: process.env.POLYGON_WALLET_ADDRESS || "0x123456789abcdefABCDEF123456789abcdefABCD",
 };
 
-// Credit user balance and create transaction
+// Credit user balance and create transaction (USDT is primary currency)
 async function creditUserBalance(
   userId: string,
-  amount: number,
-  usdtAmount: number | null,
+  usdtAmount: number,
   investmentId: string,
   network: string
 ) {
-  // Update user balance
+  // Update user balance (USDT is primary)
   await db.user.update({
     where: { id: userId },
     data: {
-      balance: { increment: amount },
-      usdtBalance: { increment: usdtAmount || 0 },
-      totalInvested: { increment: amount },
+      balance: { increment: usdtAmount },
+      totalInvested: { increment: usdtAmount },
       hasInvested: true,
       linkUnlocked: true,
     },
@@ -33,8 +31,7 @@ async function creditUserBalance(
     data: {
       userId,
       type: "deposit",
-      amount,
-      usdtAmount,
+      amount: usdtAmount, // USDT
       status: "completed",
       description: `Depósito USDT (${network}) - Confirmado automaticamente (cron)`,
       referenceId: investmentId,
@@ -109,7 +106,7 @@ export async function GET(request: NextRequest) {
       try {
         const network = deposit.network as "TRC20" | "Polygon";
         const txHash = deposit.txHash!;
-        const expectedAmount = deposit.usdtAmount || 0;
+        const expectedAmount = deposit.amount; // Already in USDT
         const walletAddress = WALLET_ADDRESSES[network as keyof typeof WALLET_ADDRESSES];
 
         console.log(`[Cron] Verifying deposit ${deposit.id} - ${txHash} on ${network}`);
@@ -123,17 +120,16 @@ export async function GET(request: NextRequest) {
         );
 
         if (verification.valid && !verification.needsMoreConfirmations) {
-          // Transaction confirmed - credit user
+          // Transaction confirmed - credit user (USDT)
           await creditUserBalance(
             deposit.userId,
-            deposit.amount,
-            deposit.usdtAmount,
+            deposit.amount, // USDT amount
             deposit.id,
             network
           );
           
           results.confirmed++;
-          console.log(`[Cron] Deposit ${deposit.id} confirmed - credited ${deposit.amount} BRL to user ${deposit.userId}`);
+          console.log(`[Cron] Deposit ${deposit.id} confirmed - credited $${deposit.amount} USDT to user ${deposit.userId}`);
         } else if (verification.valid && verification.needsMoreConfirmations) {
           // Still needs more confirmations
           results.stillPending++;

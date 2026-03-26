@@ -120,7 +120,13 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    const results = [];
+    const results: {
+      rentalId: string;
+      userId: string;
+      revenueUsdt: number;
+      revenueBrl: number;
+      btcMined: number;
+    }[] = [];
 
     for (const rental of activeRentals) {
       // Check if rental has expired

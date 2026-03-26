@@ -38,7 +38,6 @@ export async function POST(request: NextRequest) {
         pixKey: pixKey || null,
         walletAddress: walletAddress || null,
         balance: 0,
-        usdtBalance: 0,
         totalMined: 0,
         totalInvested: 0,
         role: "user",

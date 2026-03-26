@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type TabId = "home" | "miners" | "history" | "profile" | "more";
+export type TabId = "home" | "miners" | "history" | "profile" | "more" | "rentals" | "affiliate" | "settings" | "admin";
 
 interface BottomNavProps {
   activeTab: TabId;
