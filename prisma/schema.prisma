@@ -1,0 +1,290 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// ============================================================================
+// MINING PROTOCOL - USDT PRIMARY CURRENCY SYSTEM
+// ============================================================================
+// All balances and amounts are stored in USDT as the primary currency.
+// PIX deposits/withdrawals convert BRL ↔ USDT using CoinGecko API.
+// All prices are displayed in USDT with BRL equivalent for reference.
+// ============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Usuários do sistema
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  password      String
+  name          String
+  walletAddress String?  // Endereço USDT (TRC20/ERC20)
+  pixKey        String?  // Chave PIX
+  role          String   @default("user") // user, admin
+  
+  // ===== SALDO PRINCIPAL EM USDT =====
+  // Toda a plataforma usa USDT como moeda primária
+  balance       Float    @default(0) // Saldo em USDT (moeda primária)
+  
+  // Totais em USDT
+  totalMined    Float    @default(0) // Total minerado em USDT
+  totalInvested Float    @default(0) // Total investido em USDT
+  
+  // Campos de afiliado
+  affiliateCode     String?   @unique // Código único de indicação
+  referredBy        String?   // ID de quem indicou
+  referralLevel     Int       @default(1) // Nível na hierarquia (1 = indicado direto)
+  affiliateBalance  Float     @default(0) // Saldo de comissões em USDT (separado do saldo principal)
+  totalAffiliateEarnings Float @default(0) // Total ganho com afiliados em USDT
+  hasInvested       Boolean   @default(false) // Se já fez primeiro investimento
+  linkUnlocked      Boolean   @default(false) // Se o link de indicação está liberado
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  investments       Investment[]
+  transactions      Transaction[]
+  miningRental      MiningRental[]
+  miningHistory     MiningHistory[]
+  
+  // Relações de afiliado
+  referredByUser    User?         @relation("Referrals", fields: [referredBy], references: [id])
+  referrals         User[]        @relation("Referrals")
+  affiliateCommissions AffiliateCommission[]
+  affiliateWithdrawals AffiliateWithdrawal[]
+}
+
+// Mineradoras disponíveis
+model Miner {
+  id            String   @id @default(cuid())
+  name          String   @unique // ex: "Antminer S19 Pro"
+  model         String   // ex: "S19 Pro"
+  hashRate      Float    // TH/s
+  powerConsumption Float // Watts
+  coin          String   @default("BTC") // BTC, KAS, LTC
+  pool          String   @default("Binance Pool")
+  status        String   @default("online") // online, offline, maintenance
+  
+  // ===== PREÇOS EM USDT =====
+  dailyRevenue  Float    // Receita diária estimada em USDT
+  pricePerDay   Float    // Preço do aluguel por dia em USDT
+  
+  efficiency    Float    // J/TH (eficiência energética)
+  image         String?  // URL da imagem
+  description   String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  rentals       MiningRental[]
+  miningHistory MiningHistory[]
+}
+
+// Aluguel de mineradora
+model MiningRental {
+  id          String   @id @default(cuid())
+  userId      String
+  minerId     String
+  startDate   DateTime
+  endDate     DateTime
+  
+  // ===== VALORES EM USDT =====
+  amount      Float    // Valor investido em USDT
+  brlEquivalent Float? // Equivalente em BRL no momento da compra (para referência)
+  
+  hashShare   Float    // % do hashrate que o usuário está alugando
+  status      String   @default("active") // active, completed, cancelled
+  dailyReturn Float    // Retorno diário estimado em USDT
+  totalReturn Float    // Retorno total esperado em USDT
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  miner       Miner    @relation(fields: [minerId], references: [id])
+  miningHistory MiningHistory[]
+}
+
+// Histórico de mineração
+model MiningHistory {
+  id          String   @id @default(cuid())
+  userId      String
+  rentalId    String
+  minerId     String
+  date        DateTime
+  hashRate    Float    // Hashrate do dia
+  btcMined    Float    // BTC minerado
+  
+  // ===== VALORES EM USDT =====
+  usdtValue   Float    // Valor em USDT (primário)
+  brlValue    Float    // Valor em BRL (para referência histórica)
+  
+  pool        String   // Pool utilizado
+  blockFound  Boolean  @default(false) // Se encontrou bloco
+  sharesValid Int      @default(0)
+  sharesInvalid Int    @default(0)
+  createdAt   DateTime @default(now())
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rental      MiningRental @relation(fields: [rentalId], references: [id], onDelete: Cascade)
+  miner       Miner    @relation(fields: [minerId], references: [id])
+}
+
+// Investimentos/Depósitos
+model Investment {
+  id          String   @id @default(cuid())
+  userId      String
+  
+  // ===== VALORES EM USDT =====
+  amount      Float    // Valor em USDT (primário)
+  brlAmount   Float?   // Valor original em BRL (se depósito PIX)
+  usdtRate    Float?   // Taxa de conversão USDT/BRL usada no momento
+  
+  type        String   // deposit, rental_fee, withdrawal
+  method      String   // pix, usdt_trc20, usdt_polygon
+  network     String?  // TRC20, Polygon - Rede utilizada para USDT
+  status      String   @default("pending") // pending, pending_verification, confirmed, cancelled
+  txHash      String?  @unique // Hash da transação (para USDT) - deve ser único
+  pixTxId     String?  // ID da transação PIX
+  description String?
+  adminNotes  String?  // Notas do admin
+  processedBy String?  // ID do admin que processou
+  processedAt DateTime? // Data de processamento
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Transações (histórico financeiro)
+model Transaction {
+  id            String   @id @default(cuid())
+  userId        String
+  type          String   // deposit, withdrawal, mining_profit, rental_payment, affiliate_commission
+  
+  // ===== VALORES EM USDT =====
+  amount        Float    // Valor em USDT (primário)
+  brlAmount     Float?   // Equivalente em BRL (para PIX)
+  usdtRate      Float?   // Taxa de conversão usada
+  
+  status        String   @default("completed") // pending, completed, failed
+  description   String
+  referenceId   String?  // ID de referência (investment, rental, etc)
+  createdAt     DateTime @default(now())
+  
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// =====================================================
+// SISTEMA DE AFILIADOS
+// =====================================================
+
+// Comissões de afiliado
+model AffiliateCommission {
+  id              String   @id @default(cuid())
+  userId          String   // Quem recebeu a comissão
+  fromUserId      String   // Quem gerou a comissão (indicado)
+  level           Int      // Nível na hierarquia (1-5)
+  rentalId        String?  // Aluguel que gerou a comissão
+  miningHistoryId String?  // Histórico de mineração que gerou
+  
+  // ===== VALORES EM USDT =====
+  baseAmount      Float    // Valor base em USDT (rendimento do indicado)
+  percentage      Float    // Porcentagem aplicada
+  commissionAmount Float   // Valor da comissão em USDT
+  
+  status          String   @default("pending") // pending, paid, cancelled
+  createdAt       DateTime @default(now())
+  paidAt          DateTime?
+  
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Saques de comissões de afiliado
+model AffiliateWithdrawal {
+  id              String   @id @default(cuid())
+  userId          String
+  
+  // ===== VALORES EM USDT =====
+  amount          Float    // Valor solicitado em USDT
+  brlAmount       Float?   // Equivalente em BRL (se PIX)
+  usdtRate        Float?   // Taxa de conversão usada
+  fee             Float    // Taxa de saque em USDT
+  netAmount       Float    // Valor líquido em USDT
+  
+  method          String   // pix, usdt_trc20, usdt_erc20
+  address         String?  // Endereço para USDT
+  pixKey          String?  // Chave PIX
+  status          String   @default("pending") // pending, approved, processing, completed, rejected
+  adminNotes      String?  // Notas do admin
+  processedBy     String?  // ID do admin que processou
+  processedAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Configuração dos níveis de afiliado
+model AffiliateLevel {
+  id            String   @id @default(cuid())
+  level         Int      @unique // 1 a 5
+  percentage    Float    // Porcentagem de comissão
+  description   String?  // Descrição do nível
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// Configurações gerais do sistema
+model SystemConfig {
+  id            String   @id @default(cuid())
+  key          String   @unique
+  value        String
+  type         String   @default("string") // string, number, boolean, json
+  description  String?
+  category     String   @default("general") // general, affiliate, withdrawal, mining
+  isActive     Boolean  @default(true)
+  updatedAt    DateTime @updatedAt
+}
+
+// Configurações do sistema (legado - manter compatibilidade)
+model Settings {
+  id            String   @id @default(cuid())
+  key          String   @unique
+  value        String
+  description  String?
+  updatedAt    DateTime @updatedAt
+}
+
+// Pool Status (para simulação)
+model PoolStatus {
+  id            String   @id @default(cuid())
+  name         String   @unique // ex: "Binance Pool"
+  hashrate     Float    // Hashrate total do pool
+  miners       Int      // Número de miners
+  blocks24h    Int      // Blocos encontrados nas últimas 24h
+  lastBlock    DateTime? // Último bloco encontrado
+  btcPrice     Float    // Preço do BTC em USDT
+  difficulty   Float    // Dificuldade da rede
+  updatedAt    DateTime @updatedAt
+}
+
+// Logs de auditoria do admin
+model AdminLog {
+  id            String   @id @default(cuid())
+  adminId       String
+  action        String   // create, update, delete, approve, reject
+  entity        String   // user, miner, withdrawal, config
+  entityId      String?
+  oldValue      String?  // JSON do valor anterior
+  newValue      String?  // JSON do novo valor
+  description   String
+  ipAddress     String?
+  userAgent     String?
+  createdAt     DateTime @default(now())
+}
