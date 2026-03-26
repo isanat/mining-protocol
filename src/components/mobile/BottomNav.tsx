@@ -152,3 +152,15 @@ export const moreMenuItems = [
   { id: "affiliate" as TabId, label: "Afiliados", icon: User },
   { id: "settings" as TabId, label: "Configurações", icon: Settings },
 ];
+
+// Admin menu item - shown only for admins
+export const adminMenuItem = { id: "admin" as TabId, label: "Administração", icon: Settings };
+
+// Helper to get menu items based on user role
+export function getMoreMenuItems(userRole?: string) {
+  const items = [...moreMenuItems];
+  if (userRole === "admin") {
+    items.unshift(adminMenuItem);
+  }
+  return items;
+}
