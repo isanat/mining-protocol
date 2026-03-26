@@ -1,201 +1,152 @@
-import { db } from "../src/lib/db";
-import bcrypt from "bcryptjs";
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
+
+const prisma = new PrismaClient();
 
 async function main() {
-  console.log("Seeding database...");
+  console.log('🌱 Iniciando seed do banco de dados...');
 
-  // Create miners
+  // Criar usuário admin padrão
+  const adminPassword = await bcrypt.hash('admin123', 12);
+  const admin = await prisma.user.upsert({
+    where: { email: 'admin@miningprotocol.com' },
+    update: {},
+    create: {
+      email: 'admin@miningprotocol.com',
+      name: 'Administrador',
+      password: adminPassword,
+      role: 'admin',
+      balance: 0,
+      totalMined: 0,
+      totalInvested: 0,
+      affiliateCode: 'ADMIN001',
+      hasInvested: true,
+      linkUnlocked: true,
+    },
+  });
+
+  console.log('✅ Usuário admin criado:', admin.email);
+
+  // Criar níveis de afiliado padrão
+  const levels = [
+    { level: 1, percentage: 10, description: 'Indicação direta' },
+    { level: 2, percentage: 5, description: 'Segundo nível' },
+    { level: 3, percentage: 3, description: 'Terceiro nível' },
+    { level: 4, percentage: 2, description: 'Quarto nível' },
+    { level: 5, percentage: 1, description: 'Quinto nível' },
+  ];
+
+  for (const level of levels) {
+    await prisma.affiliateLevel.upsert({
+      where: { level: level.level },
+      update: level,
+      create: level,
+    });
+  }
+
+  console.log('✅ Níveis de afiliado criados');
+
+  // Criar configurações padrão do sistema
+  const configs = [
+    { key: 'maintenance_mode', value: 'false', type: 'boolean', category: 'general', description: 'Modo de manutenção' },
+    { key: 'allow_registration', value: 'true', type: 'boolean', category: 'general', description: 'Permitir novos registros' },
+    { key: 'min_deposit', value: '20', type: 'number', category: 'general', description: 'Depósito mínimo em USDT' },
+    { key: 'min_withdrawal', value: '50', type: 'number', category: 'withdrawal', description: 'Saque mínimo em USDT' },
+    { key: 'withdrawal_fee_percent', value: '2', type: 'number', category: 'withdrawal', description: 'Taxa de saque (%)' },
+    { key: 'withdrawal_processing_time', value: '24', type: 'number', category: 'withdrawal', description: 'Tempo de processamento (horas)' },
+    { key: 'affiliate_withdrawal_fee', value: '5', type: 'number', category: 'affiliate', description: 'Taxa de saque de comissões (%)' },
+    { key: 'affiliate_min_withdrawal', value: '50', type: 'number', category: 'affiliate', description: 'Saque mínimo de comissões (USDT)' },
+    { key: 'miner_profit_share', value: '70', type: 'number', category: 'mining', description: 'Share do usuário (%)' },
+  ];
+
+  for (const config of configs) {
+    await prisma.systemConfig.upsert({
+      where: { key: config.key },
+      update: config,
+      create: config,
+    });
+  }
+
+  console.log('✅ Configurações do sistema criadas');
+
+  // Criar mineradoras de exemplo
   const miners = [
     {
-      name: "Antminer S19 XP",
-      model: "S19 XP",
-      hashRate: 140,
-      powerConsumption: 3010,
-      coin: "BTC",
-      pool: "Binance Pool",
-      status: "online",
-      dailyRevenue: 85.50,
-      pricePerDay: 45.00,
-      efficiency: 21.5,
-      description: "Mais eficiente da linha S19, ideal para mineração profissional",
-    },
-    {
-      name: "Antminer S19 Pro",
-      model: "S19 Pro",
+      name: 'Antminer S19 Pro',
+      model: 'S19 Pro',
       hashRate: 110,
       powerConsumption: 3250,
-      coin: "BTC",
-      pool: "Antpool",
-      status: "online",
-      dailyRevenue: 67.20,
-      pricePerDay: 35.00,
+      coin: 'BTC',
+      pool: 'Binance Pool',
+      dailyRevenue: 15.50,
+      pricePerDay: 12.00,
       efficiency: 29.5,
-      description: "Alta performance e estabilidade comprovada",
+      status: 'online',
+      description: 'Mineradora ASIC de última geração para Bitcoin',
     },
     {
-      name: "Whatsminer M50S",
-      model: "M50S",
-      hashRate: 126,
-      powerConsumption: 3276,
-      coin: "BTC",
-      pool: "Braiins Pool",
-      status: "online",
-      dailyRevenue: 77.00,
-      pricePerDay: 40.00,
-      efficiency: 26.0,
-      description: "Excelente eficiência energética",
-    },
-    {
-      name: "Antminer S19j Pro",
-      model: "S19j Pro",
-      hashRate: 100,
-      powerConsumption: 3050,
-      coin: "BTC",
-      pool: "Foundry USA",
-      status: "online",
-      dailyRevenue: 61.00,
-      pricePerDay: 32.00,
-      efficiency: 30.5,
-      description: "Custo-benefício ideal para entrada",
-    },
-    {
-      name: "KASPA KS3",
-      model: "KS3",
-      hashRate: 9.4,
-      powerConsumption: 3500,
-      coin: "KAS",
-      pool: "Poolin",
-      status: "online",
-      dailyRevenue: 120.00,
-      pricePerDay: 60.00,
-      efficiency: 372.3,
-      description: "Alta rentabilidade em KASPA",
-    },
-    {
-      name: "Antminer L7",
-      model: "L7",
-      hashRate: 9.05,
-      powerConsumption: 3425,
-      coin: "LTC",
-      pool: "Litecoinpool",
-      status: "online",
-      dailyRevenue: 45.00,
-      pricePerDay: 25.00,
-      efficiency: 378.5,
-      description: "Mineração de Litecoin e Dogecoin",
-    },
-    {
-      name: "Goldshell KD6",
-      model: "KD6",
-      hashRate: 26.3,
-      powerConsumption: 2660,
-      coin: "KDA",
-      pool: "Kadena Pool",
-      status: "online",
-      dailyRevenue: 55.00,
-      pricePerDay: 28.00,
-      efficiency: 101.1,
-      description: "Especializada em Kadena",
-    },
-    {
-      name: "Antminer KS5",
-      model: "KS5",
-      hashRate: 20,
-      powerConsumption: 3000,
-      coin: "KAS",
-      pool: "Poolin",
-      status: "online",
-      dailyRevenue: 180.00,
-      pricePerDay: 90.00,
-      efficiency: 150.0,
-      description: "Top de linha para KASPA",
-    },
-    {
-      name: "Whatsminer M30S++",
-      model: "M30S++",
+      name: 'Whatsminer M30S++',
+      model: 'M30S++',
       hashRate: 112,
       powerConsumption: 3472,
-      coin: "BTC",
-      pool: "Antpool",
-      status: "maintenance",
-      dailyRevenue: 68.00,
-      pricePerDay: 35.00,
+      coin: 'BTC',
+      pool: 'Binance Pool',
+      dailyRevenue: 16.00,
+      pricePerDay: 13.00,
       efficiency: 31.0,
-      description: "Geração anterior, ainda muito eficiente",
+      status: 'online',
+      description: 'Alta eficiência energética para mineração de Bitcoin',
     },
     {
-      name: "Antminer S21",
-      model: "S21",
-      hashRate: 200,
+      name: 'Antminer KS3',
+      model: 'KS3',
+      hashRate: 9.4,
       powerConsumption: 3500,
-      coin: "BTC",
-      pool: "Binance Pool",
-      status: "online",
-      dailyRevenue: 122.00,
-      pricePerDay: 65.00,
-      efficiency: 17.5,
-      description: "Nova geração, máxima eficiência",
+      coin: 'KAS',
+      pool: 'Kaspa Pool',
+      dailyRevenue: 18.00,
+      pricePerDay: 15.00,
+      efficiency: 372.3,
+      status: 'online',
+      description: 'Mineradora especializada em Kaspa',
+    },
+    {
+      name: 'L7 Antminer',
+      model: 'L7',
+      hashRate: 9.5,
+      powerConsumption: 3425,
+      coin: 'LTC',
+      pool: 'Litecoin Pool',
+      dailyRevenue: 14.00,
+      pricePerDay: 11.00,
+      efficiency: 360.5,
+      status: 'online',
+      description: 'Mineradora para Litecoin e Dogecoin',
     },
   ];
 
   for (const miner of miners) {
-    await db.miner.upsert({
+    await prisma.miner.upsert({
       where: { name: miner.name },
       update: miner,
       create: miner,
     });
-    console.log(`Created/Updated miner: ${miner.name}`);
   }
 
-  // Create admin user
-  const hashedPassword = await bcrypt.hash("admin123", 12);
+  console.log('✅ Mineradoras criadas');
 
-  await db.user.upsert({
-    where: { email: "admin@miningprotocol.com" },
-    update: {},
-    create: {
-      email: "admin@miningprotocol.com",
-      name: "Admin",
-      password: hashedPassword,
-      role: "admin",
-      balance: 0,
-      totalMined: 0,
-      totalInvested: 0,
-    },
-  });
-  console.log("Created admin user: admin@miningprotocol.com");
-
-  // Create pool status
-  await db.poolStatus.upsert({
-    where: { name: "Binance Pool" },
-    update: {
-      hashrate: 12.5,
-      miners: 1247,
-      blocks24h: 34,
-      lastBlock: new Date(),
-      btcPrice: 584250,
-      difficulty: 83.1,
-    },
-    create: {
-      name: "Binance Pool",
-      hashrate: 12.5,
-      miners: 1247,
-      blocks24h: 34,
-      lastBlock: new Date(),
-      btcPrice: 584250,
-      difficulty: 83.1,
-    },
-  });
-  console.log("Created pool status");
-
-  console.log("Seeding completed!");
+  console.log('🎉 Seed concluído com sucesso!');
+  console.log('');
+  console.log('📧 Credenciais do admin:');
+  console.log('   Email: admin@miningprotocol.com');
+  console.log('   Senha: admin123');
 }
 
 main()
   .catch((e) => {
-    console.error(e);
+    console.error('❌ Erro no seed:', e);
     process.exit(1);
   })
   .finally(async () => {
-    await db.$disconnect();
+    await prisma.$disconnect();
   });

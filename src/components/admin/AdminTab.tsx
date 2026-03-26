@@ -235,10 +235,17 @@ export function AdminTab({ user }: { user: AdminUserProps }) {
       const res = await fetch(`/api/admin/users?${params}`, {
         headers: getAuthHeaders()
       });
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        toast.error(errorData.error || "Erro ao carregar usuários");
+        return;
+      }
+      
       const data = await res.json();
-      if (data.success) {
-        setUsers(data.users);
-        setUserTotalPages(data.pagination.totalPages);
+      if (data.success && data.pagination) {
+        setUsers(data.users || []);
+        setUserTotalPages(data.pagination.totalPages || 1);
       }
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -256,6 +263,13 @@ export function AdminTab({ user }: { user: AdminUserProps }) {
       const res = await fetch(`/api/admin/deposits?${params}`, {
         headers: getAuthHeaders()
       });
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        toast.error(errorData.error || "Erro ao carregar depósitos");
+        return;
+      }
+      
       const data = await res.json();
       setDeposits(data.deposits || []);
     } catch (error) {
@@ -273,8 +287,15 @@ export function AdminTab({ user }: { user: AdminUserProps }) {
       const res = await fetch(`/api/admin/withdrawals?${params}`, {
         headers: getAuthHeaders()
       });
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        toast.error(errorData.error || "Erro ao carregar saques");
+        return;
+      }
+      
       const data = await res.json();
-      if (data.success) setWithdrawals(data.withdrawals);
+      if (data.success) setWithdrawals(data.withdrawals || []);
     } catch (error) {
       console.error("Error fetching withdrawals:", error);
       toast.error("Erro ao carregar saques");

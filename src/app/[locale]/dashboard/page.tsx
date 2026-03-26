@@ -293,33 +293,10 @@ export default function MiningDashboard() {
         setIsAuthenticated(true);
         setShowLogin(false);
         localStorage.setItem("miningUser", JSON.stringify(data.user));
-        localStorage.setItem("miningToken", "demo-token");
+        localStorage.setItem("miningToken", "auth-token");
         toast.success("Login realizado com sucesso!");
       } else {
-        const mockUser: User = {
-          id: "user_" + Math.random().toString(36).substr(2, 9),
-          email: loginEmail || "demo@miningprotocol.com",
-          name: "Usuário Demo",
-          balance: 200.00, // USDT
-          balanceBrlEquivalent: 200.00 * usdtBrlRate,
-          totalMined: 450.75, // USDT
-          totalInvested: 1000.00, // USDT
-          walletAddress: "TRX123456789abcdefghijklmnopqrstuv",
-          pixKey: "demo@email.com",
-          affiliateCode: "DEMO" + Math.random().toString(36).substr(2, 4).toUpperCase(),
-          affiliateBalance: 0,
-          totalAffiliateEarnings: 0,
-          linkUnlocked: false,
-          hasInvested: false,
-          usdtRate: usdtBrlRate,
-        };
-        
-        setUser(mockUser);
-        setIsAuthenticated(true);
-        setShowLogin(false);
-        localStorage.setItem("miningUser", JSON.stringify(mockUser));
-        localStorage.setItem("miningToken", "demo-token");
-        toast.success("Login demo realizado!");
+        toast.error(data.error || "Credenciais inválidas. Tente novamente.");
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -764,15 +741,6 @@ export default function MiningDashboard() {
                       </button>
                     </div>
                     
-                    <div className="pt-4 border-t border-white/10">
-                      <Button
-                        onClick={handleLogin}
-                        variant="outline"
-                        className="w-full mobile-button-secondary"
-                      >
-                        Entrar com conta demo
-                      </Button>
-                    </div>
                   </motion.div>
                 )}
                 

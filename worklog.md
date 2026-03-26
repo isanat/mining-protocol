@@ -775,3 +775,33 @@ All fetch functions now include `getAuthHeaders` in their dependency arrays:
 - `b35164c` - feat: Complete professional admin panel with all API integrations
 - `0297d28` - feat: Add audit logs API and logs section to admin panel
 - `4912d99` - fix: Add authentication headers to admin API requests
+
+---
+Task ID: 6
+Agent: Main Agent
+Task: Auditoria completa do sistema PIX e correções de fluxo
+
+Work Log:
+- Identificado que o schema Prisma estava configurado para PostgreSQL mas o .env usava SQLite
+- Corrigido o schema para usar SQLite (provider: "sqlite")
+- Criado script de seed (prisma/seed.ts) para:
+  - Usuário admin padrão (admin@miningprotocol.com / admin123)
+  - Níveis de afiliado (5 níveis com porcentagens)
+  - Configurações do sistema
+  - Mineradoras de exemplo
+- Removido o fallback de "demo user" que criava usuários mock
+- Removido botão "Entrar com conta demo"
+- Criada API /api/admin/setup para verificar status do sistema e promover usuários a admin
+- Adicionado tratamento de erros adequado no AdminTab:
+  - fetchStats, fetchUsers, fetchDeposits, fetchWithdrawals
+  - Verificação de res.ok antes de processar dados
+  - Mensagens de erro mais claras
+- Executado db:push e db:seed para configurar o banco de dados
+
+Stage Summary:
+- Credenciais do admin: admin@miningprotocol.com / admin123
+- Banco de dados SQLite configurado e populado
+- Fluxo de login agora exige credenciais reais
+- AdminTab com tratamento de erros robusto
+- Sistema pronto para testar depósitos PIX
+
