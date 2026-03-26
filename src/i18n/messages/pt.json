@@ -1,0 +1,327 @@
+{
+  "metadata": {
+    "title": "Mining Protocol - A Revolução da Mineração de Criptomoedas",
+    "description": "Alugue mineradoras profissionais e gere renda passiva em USDT. Tecnologia de ponta, transparência total e retornos previsíveis. Comece com apenas $20."
+  },
+  "nav": {
+    "home": "Início",
+    "howItWorks": "Como Funciona",
+    "benefits": "Benefícios",
+    "miners": "Mineradoras",
+    "pricing": "Preços",
+    "faq": "Perguntas Frequentes",
+    "contact": "Contato",
+    "login": "Entrar",
+    "register": "Criar Conta",
+    "dashboard": "Painel"
+  },
+  "hero": {
+    "badge": "A Plataforma #1 em Hashpower na América Latina",
+    "title": "Transforme Seu Capital em",
+    "titleHighlight": "Renda Passiva em USDT",
+    "subtitle": "Alugue mineradoras de última geração e receba rendimentos diários em USDT. Sem complicação técnica, sem custos de energia, sem dor de cabeça. Apenas resultados reais.",
+    "cta": {
+      "primary": "Começar a Minerar Agora",
+      "secondary": "Ver Como Funciona"
+    },
+    "stats": {
+      "clients": "Clientes Ativos",
+      "miners": "Mineradoras Online",
+      "uptime": "Uptime Garantido",
+      "returns": "ROI Médio Mensal"
+    }
+  },
+  "socialProof": {
+    "title": "Mais de 2.500 investidores confiam na Mining Protocol",
+    "subtitle": "Já pagamos mais de $15 milhões em rendimentos desde 2021"
+  },
+  "features": {
+    "title": "Por Que Escolher a Mining Protocol?",
+    "subtitle": "Somos a única plataforma que oferece mineração real com transparência total e retornos previsíveis",
+    "items": {
+      "transparency": {
+        "title": "Transparência Radical",
+        "description": "Acompanhe sua mineração em tempo real via blockchain. Cada hash, cada bloco, cada satoshi é rastreável. Nada de promessas vazias."
+      },
+      "security": {
+        "title": "Segurança Institucional",
+        "description": "Seus fundos ficam em carteiras multifirma com cold storage. Auditoria trimestral por empresas independentes. Proteção de nível bancário."
+      },
+      "returns": {
+        "title": "Retornos Previsíveis",
+        "description": "Contratos com rendimentos fixos em USDT. Sabendo exatamente quanto vai receber. Sem surpresas, sem desculpas."
+      },
+      "support": {
+        "title": "Suporte Humanizado 24/7",
+        "description": "Equipe dedicada pronta para ajudar em português, inglês e espanhol. Resposta média em menos de 5 minutos."
+      },
+      "technology": {
+        "title": "Tecnologia de Ponta",
+        "description": "Mineradoras ASIC de última geração em datacenters tier-4. Eficiência energética máxima, custos operacionais mínimos."
+      },
+      "flexibility": {
+        "title": "Flexibilidade Total",
+        "description": "Contratos de 7 a 365 dias. Comece com $20. Saque seus lucros a qualquer momento. Sem trava, sem burocracia."
+      }
+    }
+  },
+  "howItWorks": {
+    "title": "Comece a Minerar em 3 Passos Simples",
+    "subtitle": "Processo 100% digital, sem necessidade de conhecimento técnico",
+    "steps": {
+      "register": {
+        "title": "Crie Sua Conta Grátis",
+        "description": "Cadastro em 2 minutos. Sem burocracia, sem verificação invasiva. Apenas email e senha para começar."
+      },
+      "deposit": {
+        "title": "Deposite em USDT ou PIX",
+        "description": "Depósitos automáticos via PIX (convertidos em USDT) ou transferência USDT direta nas redes TRC20, ERC20 ou Polygon."
+      },
+      "earn": {
+        "title": "Receba Rendimentos Diários",
+        "description": "Escolha sua mineradora, alugue e comece a receber rendimentos em USDT todos os dias. Saque quando quiser."
+      }
+    }
+  },
+  "miners": {
+    "title": "Nossas Mineradoras",
+    "subtitle": "Equipamentos de última geração com máximo desempenho",
+    "viewDetails": "Ver Detalhes",
+    "rentNow": "Alugar Agora",
+    "dailyRevenue": "Rendimento Diário",
+    "pricePerDay": "Preço por Dia",
+    "efficiency": "Eficiência",
+    "hashrate": "Hashrate",
+    "power": "Consumo",
+    "pool": "Pool de Mineração",
+    "status": {
+      "available": "Disponível",
+      "rented": "Alugada",
+      "maintenance": "Em Manutenção"
+    }
+  },
+  "pricing": {
+    "title": "Planos e Investimentos",
+    "subtitle": "Escolha o plano ideal para o seu perfil de investidor",
+    "plans": {
+      "starter": {
+        "name": "Starter",
+        "description": "Perfeito para quem está começando",
+        "price": "A partir de $20",
+        "features": [
+          "Acesso a mineradoras básicas",
+          "Rendimentos diários em USDT",
+          "Saque a qualquer momento",
+          "Suporte por email"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "Para investidores experientes",
+        "price": "A partir de $500",
+        "features": [
+          "Todas as mineradoras disponíveis",
+          "Rendimentos premium (+15%)",
+          "Prioridade no suporte",
+          "Relatórios detalhados",
+          "API de integração"
+        ],
+        "popular": "Mais Popular"
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "description": "Para grandes investidores",
+        "price": "A partir de $10.000",
+        "features": [
+          "Mineradoras dedicadas",
+          "Rendimentos exclusivos (+25%)",
+          "Gerente de conta pessoal",
+          "SLA garantido 99.9%",
+          "Acesso antecipado a novos equipamentos"
+        ]
+      }
+    }
+  },
+  "affiliate": {
+    "title": "Programa de Afiliados com 5 Níveis",
+    "subtitle": "Ganhe comissões em 5 níveis de indicação e construa uma renda recorrente",
+    "levels": {
+      "1": "Nível 1 - 10%",
+      "2": "Nível 2 - 5%",
+      "3": "Nível 3 - 3%",
+      "4": "Nível 4 - 2%",
+      "5": "Nível 5 - 1%"
+    },
+    "benefits": [
+      "Comissões vitalícias sobre todas as indicações",
+      "Pagamentos instantâneos em USDT",
+      "Painel de afiliados com estatísticas em tempo real",
+      "Materiais de marketing prontos para usar",
+      "Suporte dedicado para afiliados"
+    ],
+    "cta": "Participar do Programa"
+  },
+  "faq": {
+    "title": "Perguntas Frequentes",
+    "subtitle": "Tire suas dúvidas sobre nossa plataforma",
+    "items": [
+      {
+        "question": "O que é mineração de criptomoedas?",
+        "answer": "Mineração é o processo de validar transações na blockchain e receber criptomoedas como recompensa. Com a Mining Protocol, você aluga o equipamento e a infraestrutura, e nós fazemos todo o trabalho técnico para você."
+      },
+      {
+        "question": "Quanto posso ganhar?",
+        "answer": "Os rendimentos variam de acordo com o equipamento alugado e a duração do contrato. Nossos clientes relatam ROI médio de 8-15% ao mês. Contratos mais longos e investimentos maiores oferecem retornos superiores."
+      },
+      {
+        "question": "É seguro investir?",
+        "answer": "Sim. Utilizamos as melhores práticas de segurança do mercado: carteiras multifirma, cold storage, auditorias trimestrais e proteção de nível bancário. Seus fundos estão sempre seguros."
+      },
+      {
+        "question": "Quais formas de pagamento aceitas?",
+        "answer": "Aceitamos PIX (convertido automaticamente em USDT pela taxa de câmbio do dia) e depósitos diretos em USDT nas redes TRC20, ERC20 e Polygon."
+      },
+      {
+        "question": "Posso sacar meu dinheiro a qualquer momento?",
+        "answer": "Sim! Seus rendimentos podem ser sacados a qualquer momento, sem taxas ocultas. Saques são processados em até 24 horas úteis."
+      },
+      {
+        "question": "Preciso de conhecimento técnico?",
+        "answer": "Não. Nós cuidamos de toda a parte técnica: instalação, configuração, manutenção e otimização. Você só precisa escolher seu plano e acompanhar seus rendimentos."
+      },
+      {
+        "question": "Como funciona o programa de afiliados?",
+        "answer": "Indique amigos e ganhe comissões em 5 níveis: 10% no nível 1, 5% no nível 2, 3% no nível 3, 2% no nível 4 e 1% no nível 5. As comissões são vitalícias e pagas instantaneamente em USDT."
+      },
+      {
+        "question": "Vocês emitem nota fiscal?",
+        "answer": "Sim. Todos os rendimentos são acompanhados de nota fiscal eletrônica, garantindo a regularidade fiscal dos seus ganhos."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Pronto Para Começar?",
+    "subtitle": "Junte-se a milhares de investidores que já estão gerando renda passiva com a Mining Protocol",
+    "button": "Criar Conta Grátis",
+    "guarantee": "Sem taxas ocultas • Sem compromisso • Cancele quando quiser"
+  },
+  "footer": {
+    "company": "Mining Protocol",
+    "description": "A plataforma líder em aluguel de hashpower na América Latina. Tecnologia, transparência e resultados reais desde 2021.",
+    "links": {
+      "platform": "Plataforma",
+      "about": "Sobre Nós",
+      "miners": "Mineradoras",
+      "pricing": "Preços",
+      "affiliate": "Afiliados",
+      "support": "Suporte",
+      "faq": "FAQ",
+      "contact": "Contato",
+      "legal": "Legal",
+      "terms": "Termos de Uso",
+      "privacy": "Política de Privacidade",
+      "cookies": "Política de Cookies"
+    },
+    "social": "Redes Sociais",
+    "newsletter": {
+      "title": "Newsletter",
+      "description": "Receba novidades e dicas de investimento",
+      "placeholder": "Seu email",
+      "button": "Inscrever"
+    },
+    "copyright": "© {year} Mining Protocol. Todos os direitos reservados.",
+    "disclaimer": "A mineração de criptomoedas envolve riscos. Rentabilidades passadas não garantem resultados futuros. Investa com responsabilidade."
+  },
+  "dashboard": {
+    "welcome": "Bem-vindo de volta",
+    "balance": "Saldo Disponível",
+    "totalMined": "Total Minerado",
+    "activeRentals": "Aluguéis Ativos",
+    "affiliateEarnings": "Ganhos de Afiliado",
+    "deposit": "Depositar",
+    "withdraw": "Sacar",
+    "rentMiner": "Alugar Mineradora",
+    "recentTransactions": "Transações Recentes",
+    "myRentals": "Meus Aluguéis",
+    "affiliateProgram": "Programa de Afiliados",
+    "settings": "Configurações",
+    "logout": "Sair"
+  },
+  "auth": {
+    "login": {
+      "title": "Entrar na sua conta",
+      "email": "Email",
+      "password": "Senha",
+      "submit": "Entrar",
+      "forgotPassword": "Esqueceu a senha?",
+      "noAccount": "Não tem conta?",
+      "register": "Cadastre-se",
+      "demo": "Entrar com conta demo"
+    },
+    "register": {
+      "title": "Criar sua conta",
+      "name": "Nome completo",
+      "email": "Email",
+      "password": "Senha",
+      "confirmPassword": "Confirmar senha",
+      "submit": "Criar Conta",
+      "hasAccount": "Já tem conta?",
+      "login": "Entrar",
+      "terms": "Ao continuar, você concorda com nossos"
+    }
+  },
+  "deposit": {
+    "title": "Depositar",
+    "method": "Método de Depósito",
+    "pix": "PIX",
+    "usdt": "USDT",
+    "amount": "Valor",
+    "minimum": "Mínimo: R$ 20",
+    "receive": "Você receberá",
+    "rate": "Taxa de conversão",
+    "pixKey": "Chave PIX para depósito",
+    "copyKey": "Copiar chave",
+    "network": "Rede",
+    "trc20": "TRC20 (Tron)",
+    "erc20": "ERC20 (Ethereum)",
+    "polygon": "Polygon",
+    "walletAddress": "Endereço da Carteira",
+    "txHash": "Hash da Transação",
+    "verifying": "Verificando transação...",
+    "verified": "Depósito confirmado!",
+    "pending": "Verificação pendente",
+    "submit": "Confirmar Depósito"
+  },
+  "withdraw": {
+    "title": "Sacar",
+    "method": "Método de Saque",
+    "amount": "Valor",
+    "available": "Disponível",
+    "pixKey": "Chave PIX",
+    "walletAddress": "Endereço da Carteira",
+    "submit": "Solicitar Saque",
+    "processing": "Processamento em até 24 horas"
+  },
+  "rental": {
+    "title": "Alugar Mineradora",
+    "selectMiner": "Selecionar Mineradora",
+    "duration": "Duração",
+    "days": "dias",
+    "totalCost": "Custo Total",
+    "estimatedReturn": "Retorno Estimado",
+    "roi": "ROI Estimado",
+    "confirm": "Confirmar Aluguel"
+  },
+  "notifications": {
+    "depositSuccess": "Depósito realizado com sucesso!",
+    "withdrawSuccess": "Saque solicitado com sucesso!",
+    "rentalSuccess": "Mineradora alugada com sucesso!",
+    "error": "Ocorreu um erro. Tente novamente.",
+    "insufficientBalance": "Saldo insuficiente"
+  },
+  "language": {
+    "pt": "Português",
+    "en": "English",
+    "es": "Español"
+  }
+}

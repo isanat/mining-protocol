@@ -1,0 +1,327 @@
+{
+  "metadata": {
+    "title": "Mining Protocol - The Cryptocurrency Mining Revolution",
+    "description": "Rent professional miners and generate passive income in USDT. Cutting-edge technology, total transparency, and predictable returns. Start with just $20."
+  },
+  "nav": {
+    "home": "Home",
+    "howItWorks": "How It Works",
+    "benefits": "Benefits",
+    "miners": "Miners",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Sign Up",
+    "dashboard": "Dashboard"
+  },
+  "hero": {
+    "badge": "The #1 Hashpower Platform in Latin America",
+    "title": "Transform Your Capital into",
+    "titleHighlight": "Passive Income in USDT",
+    "subtitle": "Rent state-of-the-art miners and receive daily earnings in USDT. No technical hassle, no energy costs, no headaches. Just real results.",
+    "cta": {
+      "primary": "Start Mining Now",
+      "secondary": "See How It Works"
+    },
+    "stats": {
+      "clients": "Active Clients",
+      "miners": "Online Miners",
+      "uptime": "Guaranteed Uptime",
+      "returns": "Average Monthly ROI"
+    }
+  },
+  "socialProof": {
+    "title": "Over 2,500 investors trust Mining Protocol",
+    "subtitle": "We've already paid out over $15 million in returns since 2021"
+  },
+  "features": {
+    "title": "Why Choose Mining Protocol?",
+    "subtitle": "We're the only platform offering real mining with total transparency and predictable returns",
+    "items": {
+      "transparency": {
+        "title": "Radical Transparency",
+        "description": "Track your mining in real-time via blockchain. Every hash, every block, every satoshi is traceable. No empty promises."
+      },
+      "security": {
+        "title": "Institutional Security",
+        "description": "Your funds are in multi-sig wallets with cold storage. Quarterly audits by independent firms. Bank-level protection."
+      },
+      "returns": {
+        "title": "Predictable Returns",
+        "description": "Contracts with fixed returns in USDT. Know exactly what you'll receive. No surprises, no excuses."
+      },
+      "support": {
+        "title": "24/7 Human Support",
+        "description": "Dedicated team ready to help in Portuguese, English, and Spanish. Average response time under 5 minutes."
+      },
+      "technology": {
+        "title": "Cutting-Edge Technology",
+        "description": "Latest-generation ASIC miners in tier-4 datacenters. Maximum energy efficiency, minimum operational costs."
+      },
+      "flexibility": {
+        "title": "Total Flexibility",
+        "description": "Contracts from 7 to 365 days. Start with $20. Withdraw your profits anytime. No locks, no bureaucracy."
+      }
+    }
+  },
+  "howItWorks": {
+    "title": "Start Mining in 3 Simple Steps",
+    "subtitle": "100% digital process, no technical knowledge required",
+    "steps": {
+      "register": {
+        "title": "Create Your Free Account",
+        "description": "Sign up in 2 minutes. No bureaucracy, no invasive verification. Just email and password to get started."
+      },
+      "deposit": {
+        "title": "Deposit in USDT or PIX",
+        "description": "Automatic deposits via PIX (converted to USDT) or direct USDT transfer on TRC20, ERC20, or Polygon networks."
+      },
+      "earn": {
+        "title": "Receive Daily Earnings",
+        "description": "Choose your miner, rent it, and start receiving daily earnings in USDT. Withdraw whenever you want."
+      }
+    }
+  },
+  "miners": {
+    "title": "Our Miners",
+    "subtitle": "State-of-the-art equipment with maximum performance",
+    "viewDetails": "View Details",
+    "rentNow": "Rent Now",
+    "dailyRevenue": "Daily Revenue",
+    "pricePerDay": "Price per Day",
+    "efficiency": "Efficiency",
+    "hashrate": "Hashrate",
+    "power": "Power Consumption",
+    "pool": "Mining Pool",
+    "status": {
+      "available": "Available",
+      "rented": "Rented",
+      "maintenance": "Under Maintenance"
+    }
+  },
+  "pricing": {
+    "title": "Plans and Investments",
+    "subtitle": "Choose the ideal plan for your investor profile",
+    "plans": {
+      "starter": {
+        "name": "Starter",
+        "description": "Perfect for beginners",
+        "price": "Starting from $20",
+        "features": [
+          "Access to basic miners",
+          "Daily earnings in USDT",
+          "Withdraw anytime",
+          "Email support"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "For experienced investors",
+        "price": "Starting from $500",
+        "features": [
+          "All miners available",
+          "Premium earnings (+15%)",
+          "Priority support",
+          "Detailed reports",
+          "Integration API"
+        ],
+        "popular": "Most Popular"
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "description": "For large investors",
+        "price": "Starting from $10,000",
+        "features": [
+          "Dedicated miners",
+          "Exclusive earnings (+25%)",
+          "Personal account manager",
+          "99.9% SLA guarantee",
+          "Early access to new equipment"
+        ]
+      }
+    }
+  },
+  "affiliate": {
+    "title": "5-Level Affiliate Program",
+    "subtitle": "Earn commissions across 5 referral levels and build recurring income",
+    "levels": {
+      "1": "Level 1 - 10%",
+      "2": "Level 2 - 5%",
+      "3": "Level 3 - 3%",
+      "4": "Level 4 - 2%",
+      "5": "Level 5 - 1%"
+    },
+    "benefits": [
+      "Lifetime commissions on all referrals",
+      "Instant USDT payments",
+      "Affiliate dashboard with real-time stats",
+      "Ready-to-use marketing materials",
+      "Dedicated affiliate support"
+    ],
+    "cta": "Join the Program"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Get answers to your questions about our platform",
+    "items": [
+      {
+        "question": "What is cryptocurrency mining?",
+        "answer": "Mining is the process of validating transactions on the blockchain and receiving cryptocurrency as a reward. With Mining Protocol, you rent the equipment and infrastructure, and we handle all the technical work for you."
+      },
+      {
+        "question": "How much can I earn?",
+        "answer": "Returns vary based on the rented equipment and contract duration. Our clients report an average ROI of 8-15% per month. Longer contracts and larger investments offer superior returns."
+      },
+      {
+        "question": "Is it safe to invest?",
+        "answer": "Yes. We use the best security practices in the market: multi-sig wallets, cold storage, quarterly audits, and bank-level protection. Your funds are always safe."
+      },
+      {
+        "question": "What payment methods do you accept?",
+        "answer": "We accept PIX (automatically converted to USDT at the daily exchange rate) and direct USDT deposits on TRC20, ERC20, and Polygon networks."
+      },
+      {
+        "question": "Can I withdraw my money anytime?",
+        "answer": "Yes! Your earnings can be withdrawn anytime, with no hidden fees. Withdrawals are processed within 24 business hours."
+      },
+      {
+        "question": "Do I need technical knowledge?",
+        "answer": "No. We handle all the technical aspects: installation, configuration, maintenance, and optimization. You just need to choose your plan and track your earnings."
+      },
+      {
+        "question": "How does the affiliate program work?",
+        "answer": "Refer friends and earn commissions across 5 levels: 10% on level 1, 5% on level 2, 3% on level 3, 2% on level 4, and 1% on level 5. Commissions are lifetime and paid instantly in USDT."
+      },
+      {
+        "question": "Do you issue invoices?",
+        "answer": "Yes. All earnings are accompanied by electronic invoices, ensuring the fiscal regularity of your gains."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Ready to Start?",
+    "subtitle": "Join thousands of investors already generating passive income with Mining Protocol",
+    "button": "Create Free Account",
+    "guarantee": "No hidden fees • No commitment • Cancel anytime"
+  },
+  "footer": {
+    "company": "Mining Protocol",
+    "description": "The leading hashpower rental platform in Latin America. Technology, transparency, and real results since 2021.",
+    "links": {
+      "platform": "Platform",
+      "about": "About Us",
+      "miners": "Miners",
+      "pricing": "Pricing",
+      "affiliate": "Affiliates",
+      "support": "Support",
+      "faq": "FAQ",
+      "contact": "Contact",
+      "legal": "Legal",
+      "terms": "Terms of Service",
+      "privacy": "Privacy Policy",
+      "cookies": "Cookie Policy"
+    },
+    "social": "Social Media",
+    "newsletter": {
+      "title": "Newsletter",
+      "description": "Receive news and investment tips",
+      "placeholder": "Your email",
+      "button": "Subscribe"
+    },
+    "copyright": "© {year} Mining Protocol. All rights reserved.",
+    "disclaimer": "Cryptocurrency mining involves risks. Past returns do not guarantee future results. Invest responsibly."
+  },
+  "dashboard": {
+    "welcome": "Welcome back",
+    "balance": "Available Balance",
+    "totalMined": "Total Mined",
+    "activeRentals": "Active Rentals",
+    "affiliateEarnings": "Affiliate Earnings",
+    "deposit": "Deposit",
+    "withdraw": "Withdraw",
+    "rentMiner": "Rent Miner",
+    "recentTransactions": "Recent Transactions",
+    "myRentals": "My Rentals",
+    "affiliateProgram": "Affiliate Program",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign in to your account",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign In",
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "register": "Sign Up",
+      "demo": "Sign in with demo account"
+    },
+    "register": {
+      "title": "Create your account",
+      "name": "Full name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "submit": "Create Account",
+      "hasAccount": "Already have an account?",
+      "login": "Sign In",
+      "terms": "By continuing, you agree to our"
+    }
+  },
+  "deposit": {
+    "title": "Deposit",
+    "method": "Deposit Method",
+    "pix": "PIX",
+    "usdt": "USDT",
+    "amount": "Amount",
+    "minimum": "Minimum: $20",
+    "receive": "You will receive",
+    "rate": "Conversion rate",
+    "pixKey": "PIX key for deposit",
+    "copyKey": "Copy key",
+    "network": "Network",
+    "trc20": "TRC20 (Tron)",
+    "erc20": "ERC20 (Ethereum)",
+    "polygon": "Polygon",
+    "walletAddress": "Wallet Address",
+    "txHash": "Transaction Hash",
+    "verifying": "Verifying transaction...",
+    "verified": "Deposit confirmed!",
+    "pending": "Verification pending",
+    "submit": "Confirm Deposit"
+  },
+  "withdraw": {
+    "title": "Withdraw",
+    "method": "Withdrawal Method",
+    "amount": "Amount",
+    "available": "Available",
+    "pixKey": "PIX Key",
+    "walletAddress": "Wallet Address",
+    "submit": "Request Withdrawal",
+    "processing": "Processing within 24 hours"
+  },
+  "rental": {
+    "title": "Rent Miner",
+    "selectMiner": "Select Miner",
+    "duration": "Duration",
+    "days": "days",
+    "totalCost": "Total Cost",
+    "estimatedReturn": "Estimated Return",
+    "roi": "Estimated ROI",
+    "confirm": "Confirm Rental"
+  },
+  "notifications": {
+    "depositSuccess": "Deposit successful!",
+    "withdrawSuccess": "Withdrawal requested successfully!",
+    "rentalSuccess": "Miner rented successfully!",
+    "error": "An error occurred. Please try again.",
+    "insufficientBalance": "Insufficient balance"
+  },
+  "language": {
+    "pt": "Português",
+    "en": "English",
+    "es": "Español"
+  }
+}
