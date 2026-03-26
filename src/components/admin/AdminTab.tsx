@@ -27,6 +27,13 @@ import { toast } from "sonner";
 // ===== TYPES =====
 type AdminSection = 'dashboard' | 'users' | 'deposits' | 'withdrawals' | 'miners' | 'affiliates' | 'settings' | 'logs';
 
+interface AdminUserProps {
+  id: string;
+  email: string;
+  name: string;
+  role?: string;
+}
+
 interface AdminStats {
   usdtRate: number;
   users: { total: number; active: number; newToday: number; withAffiliateLink: number };
@@ -127,7 +134,12 @@ interface AdminLog {
 }
 
 // ===== MAIN COMPONENT =====
-export function AdminTab() {
+export function AdminTab({ user }: { user: AdminUserProps }) {
+  // Get auth headers for all requests
+  const getAuthHeaders = useCallback(() => ({
+    'x-user-id': user.id,
+    'x-user-role': user.role || 'user',
+  }), [user.id, user.role]);
   // State
   const [activeSection, setActiveSection] = useState<AdminSection>('dashboard');
   const [loading, setLoading] = useState(true);
@@ -193,14 +205,16 @@ export function AdminTab() {
   // ===== FETCH FUNCTIONS =====
   const fetchStats = useCallback(async () => {
     try {
-      const res = await fetch("/api/admin/stats");
+      const res = await fetch("/api/admin/stats", {
+        headers: getAuthHeaders()
+      });
       const data = await res.json();
       if (data.success) setStats(data);
     } catch (error) {
       console.error("Error fetching stats:", error);
       toast.error("Erro ao carregar estatísticas");
     }
-  }, []);
+  }, [getAuthHeaders]);
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -209,7 +223,9 @@ export function AdminTab() {
         limit: "20", 
         search: userSearch 
       });
-      const res = await fetch(`/api/admin/users?${params}`);
+      const res = await fetch(`/api/admin/users?${params}`, {
+        headers: getAuthHeaders()
+      });
       const data = await res.json();
       if (data.success) {
         setUsers(data.users);
@@ -219,7 +235,7 @@ export function AdminTab() {
       console.error("Error fetching users:", error);
       toast.error("Erro ao carregar usuários");
     }
-  }, [userPage, userSearch]);
+  }, [getAuthHeaders, userPage, userSearch]);
 
   const fetchDeposits = useCallback(async () => {
     try {
@@ -228,14 +244,16 @@ export function AdminTab() {
         method: depositMethod,
         limit: "50" 
       });
-      const res = await fetch(`/api/admin/deposits?${params}`);
+      const res = await fetch(`/api/admin/deposits?${params}`, {
+        headers: getAuthHeaders()
+      });
       const data = await res.json();
       setDeposits(data.deposits || []);
     } catch (error) {
       console.error("Error fetching deposits:", error);
       toast.error("Erro ao carregar depósitos");
     }
-  }, [depositStatus, depositMethod]);
+  }, [getAuthHeaders, depositStatus, depositMethod]);
 
   const fetchWithdrawals = useCallback(async () => {
     try {
@@ -243,29 +261,35 @@ export function AdminTab() {
         status: withdrawalStatus, 
         limit: "50" 
       });
-      const res = await fetch(`/api/admin/withdrawals?${params}`);
+      const res = await fetch(`/api/admin/withdrawals?${params}`, {
+        headers: getAuthHeaders()
+      });
       const data = await res.json();
       if (data.success) setWithdrawals(data.withdrawals);
     } catch (error) {
       console.error("Error fetching withdrawals:", error);
       toast.error("Erro ao carregar saques");
     }
-  }, [withdrawalStatus]);
+  }, [getAuthHeaders, withdrawalStatus]);
 
   const fetchMiners = useCallback(async () => {
     try {
-      const res = await fetch("/api/admin/miners");
+      const res = await fetch("/api/admin/miners", {
+        headers: getAuthHeaders()
+      });
       const data = await res.json();
       if (data.success) setMiners(data.miners);
     } catch (error) {
       console.error("Error fetching miners:", error);
       toast.error("Erro ao carregar mineradoras");
     }
-  }, []);
+  }, [getAuthHeaders]);
 
   const fetchAffiliates = useCallback(async () => {
     try {
-      const res = await fetch("/api/admin/affiliates");
+      const res = await fetch("/api/admin/affiliates", {
+        headers: getAuthHeaders()
+      });
       const data = await res.json();
       if (data.success) {
         setAffiliates(data.affiliates);
@@ -275,7 +299,7 @@ export function AdminTab() {
       console.error("Error fetching affiliates:", error);
       toast.error("Erro ao carregar afiliados");
     }
-  }, []);
+  }, [getAuthHeaders]);
 
   const fetchLogs = useCallback(async () => {
     try {
@@ -283,7 +307,9 @@ export function AdminTab() {
         page: logPage.toString(), 
         limit: "30" 
       });
-      const res = await fetch(`/api/admin/logs?${params}`);
+      const res = await fetch(`/api/admin/logs?${params}`, {
+        headers: getAuthHeaders()
+      });
       const data = await res.json();
       if (data.success) {
         setLogs(data.logs);
@@ -293,11 +319,13 @@ export function AdminTab() {
       console.error("Error fetching logs:", error);
       toast.error("Erro ao carregar logs");
     }
-  }, [logPage]);
+  }, [getAuthHeaders, logPage]);
 
   const fetchConfigs = useCallback(async () => {
     try {
-      const res = await fetch("/api/admin/config");
+      const res = await fetch("/api/admin/config", {
+        headers: getAuthHeaders()
+      });
       const data = await res.json();
       if (data.success) {
         setConfigs(data.configs || {});
@@ -323,7 +351,7 @@ export function AdminTab() {
       console.error("Error fetching configs:", error);
       toast.error("Erro ao carregar configurações");
     }
-  }, []);
+  }, [getAuthHeaders]);
 
   // ===== EFFECTS =====
   useEffect(() => {
@@ -357,7 +385,7 @@ export function AdminTab() {
       
       const res = await fetch("/api/admin/users", {
         method, 
-        headers: { "Content-Type": "application/json" }, 
+        headers: { ...getAuthHeaders(), "Content-Type": "application/json" }, 
         body: JSON.stringify(body)
       });
       const data = await res.json();
@@ -381,7 +409,10 @@ export function AdminTab() {
     if (!confirm("Tem certeza que deseja excluir este usuário? Esta ação não pode ser desfeita.")) return;
     
     try {
-      const res = await fetch(`/api/admin/users?id=${userId}`, { method: "DELETE" });
+      const res = await fetch(`/api/admin/users?id=${userId}`, { 
+        method: "DELETE",
+        headers: getAuthHeaders()
+      });
       const data = await res.json();
       
       if (data.success) {
@@ -423,7 +454,7 @@ export function AdminTab() {
     try {
       const res = await fetch("/api/admin/deposits", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
         body: JSON.stringify({ depositId, action: "approve", adminNotes })
       });
       const data = await res.json();
@@ -446,7 +477,7 @@ export function AdminTab() {
     try {
       const res = await fetch("/api/admin/deposits", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
         body: JSON.stringify({ depositId, action: "reject", adminNotes })
       });
       const data = await res.json();
@@ -469,7 +500,7 @@ export function AdminTab() {
     try {
       const res = await fetch("/api/admin/deposits", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
         body: JSON.stringify({ depositId })
       });
       const data = await res.json();
@@ -489,7 +520,7 @@ export function AdminTab() {
     try {
       const res = await fetch("/api/admin/withdrawals", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
         body: JSON.stringify({ withdrawalId, action: "approve", adminNotes })
       });
       const data = await res.json();
@@ -512,7 +543,7 @@ export function AdminTab() {
     try {
       const res = await fetch("/api/admin/withdrawals", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
         body: JSON.stringify({ withdrawalId, action: "reject", adminNotes })
       });
       const data = await res.json();
@@ -535,7 +566,7 @@ export function AdminTab() {
     try {
       const res = await fetch("/api/admin/withdrawals", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
         body: JSON.stringify({ withdrawalId, action: "process", adminNotes, txHash: txHashInput })
       });
       const data = await res.json();
@@ -565,7 +596,7 @@ export function AdminTab() {
       
       const res = await fetch("/api/admin/miners", {
         method, 
-        headers: { "Content-Type": "application/json" }, 
+        headers: { ...getAuthHeaders(), "Content-Type": "application/json" }, 
         body: JSON.stringify(body)
       });
       const data = await res.json();
@@ -589,7 +620,10 @@ export function AdminTab() {
     if (!confirm("Tem certeza que deseja excluir esta mineradora?")) return;
     
     try {
-      const res = await fetch(`/api/admin/miners?id=${minerId}`, { method: "DELETE" });
+      const res = await fetch(`/api/admin/miners?id=${minerId}`, { 
+        method: "DELETE",
+        headers: getAuthHeaders()
+      });
       const data = await res.json();
       
       if (data.success) {
@@ -639,7 +673,7 @@ export function AdminTab() {
       
       const res = await fetch("/api/admin/config", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
         body: JSON.stringify({ configs: configsArray, affiliateLevels: levelForm })
       });
       const data = await res.json();
@@ -657,7 +691,10 @@ export function AdminTab() {
 
   const handleInitConfigs = async () => {
     try {
-      const res = await fetch("/api/admin/config", { method: "PUT" });
+      const res = await fetch("/api/admin/config", { 
+        method: "PUT",
+        headers: getAuthHeaders()
+      });
       const data = await res.json();
       
       if (data.success) {

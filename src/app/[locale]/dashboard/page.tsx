@@ -1018,7 +1018,7 @@ export default function MiningDashboard() {
             )}
             
             {activeTab === "admin" && user?.role === "admin" && (
-              <AdminTab />
+              <AdminTab user={user} />
             )}
           </AnimatePresence>
         </div>
