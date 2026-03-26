@@ -35,7 +35,6 @@ interface AdminUserProps {
 }
 
 interface AdminStats {
-  usdtRate: number;
   users: { total: number; active: number; newToday: number; withAffiliateLink: number };
   financial: { 
     totalInvestedUsdt: number; totalInvestedBrl: number;
@@ -208,8 +207,18 @@ export function AdminTab({ user }: { user: AdminUserProps }) {
       const res = await fetch("/api/admin/stats", {
         headers: getAuthHeaders()
       });
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        console.error("Stats API error:", errorData);
+        toast.error(errorData.error || "Erro ao carregar estatísticas");
+        return;
+      }
+      
       const data = await res.json();
-      if (data.success) setStats(data);
+      if (data.success && data.stats) {
+        setStats(data.stats);
+      }
     } catch (error) {
       console.error("Error fetching stats:", error);
       toast.error("Erro ao carregar estatísticas");
@@ -766,14 +775,14 @@ export function AdminTab({ user }: { user: AdminUserProps }) {
       {/* Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { title: "Usuários", value: stats?.users.total || 0, sub: `${stats?.users.newToday || 0} novos hoje`, icon: Users, color: "from-blue-500 to-cyan-500" },
-          { title: "Depósitos Pendentes", value: stats?.deposits.pending || 0, sub: "aguardando aprovação", icon: Wallet, color: "from-amber-500 to-orange-500" },
-          { title: "Saques Pendentes", value: stats?.withdrawals.pending || 0, sub: formatCurrency(stats?.withdrawals.pendingAmountUsdt || 0), icon: ArrowDownLeft, color: "from-red-500 to-rose-500" },
-          { title: "Total Investido", value: formatCurrency(stats?.financial.totalInvestedUsdt || 0), sub: formatCurrency(stats?.financial.totalInvestedBrl || 0, 'BRL'), icon: TrendingUp, color: "from-emerald-500 to-green-500" },
-          { title: "Saldo Usuários", value: formatCurrency(stats?.financial.totalBalanceUsdt || 0), sub: "USDT em contas", icon: DollarSign, color: "from-purple-500 to-pink-500" },
-          { title: "Comissões Afiliados", value: formatCurrency(stats?.financial.totalAffiliateBalanceUsdt || 0), sub: "aguardando saque", icon: Crown, color: "from-yellow-500 to-amber-500" },
-          { title: "Mineradoras", value: stats?.mining.totalMiners || 0, sub: `${stats?.mining.onlineMiners || 0} online`, icon: Server, color: "from-teal-500 to-cyan-500" },
-          { title: "Aluguéis Ativos", value: stats?.mining.activeRentals || 0, sub: "em operação", icon: Activity, color: "from-indigo-500 to-violet-500" },
+          { title: "Usuários", value: stats?.users?.total || 0, sub: `${stats?.users?.newToday || 0} novos hoje`, icon: Users, color: "from-blue-500 to-cyan-500" },
+          { title: "Depósitos Pendentes", value: stats?.deposits?.pending || 0, sub: "aguardando aprovação", icon: Wallet, color: "from-amber-500 to-orange-500" },
+          { title: "Saques Pendentes", value: stats?.withdrawals?.pending || 0, sub: formatCurrency(stats?.withdrawals?.pendingAmountUsdt || 0), icon: ArrowDownLeft, color: "from-red-500 to-rose-500" },
+          { title: "Total Investido", value: formatCurrency(stats?.financial?.totalInvestedUsdt || 0), sub: formatCurrency(stats?.financial?.totalInvestedBrl || 0, 'BRL'), icon: TrendingUp, color: "from-emerald-500 to-green-500" },
+          { title: "Saldo Usuários", value: formatCurrency(stats?.financial?.totalBalanceUsdt || 0), sub: "USDT em contas", icon: DollarSign, color: "from-purple-500 to-pink-500" },
+          { title: "Comissões Afiliados", value: formatCurrency(stats?.financial?.totalAffiliateBalanceUsdt || 0), sub: "aguardando saque", icon: Crown, color: "from-yellow-500 to-amber-500" },
+          { title: "Mineradoras", value: stats?.mining?.totalMiners || 0, sub: `${stats?.mining?.onlineMiners || 0} online`, icon: Server, color: "from-teal-500 to-cyan-500" },
+          { title: "Aluguéis Ativos", value: stats?.mining?.activeRentals || 0, sub: "em operação", icon: Activity, color: "from-indigo-500 to-violet-500" },
         ].map((card, i) => (
           <motion.div
             key={i}
@@ -806,11 +815,11 @@ export function AdminTab({ user }: { user: AdminUserProps }) {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              { id: 'users', label: 'Gerenciar Usuários', icon: Users, count: stats?.users.total },
-              { id: 'deposits', label: 'Aprovar Depósitos', icon: Wallet, count: stats?.deposits.pending, urgent: true },
-              { id: 'withdrawals', label: 'Processar Saques', icon: ArrowUpRight, count: stats?.withdrawals.pending, urgent: true },
-              { id: 'miners', label: 'Mineradoras', icon: Server, count: stats?.mining.totalMiners },
-              { id: 'affiliates', label: 'Afiliados', icon: Crown, count: stats?.users.withAffiliateLink },
+              { id: 'users', label: 'Gerenciar Usuários', icon: Users, count: stats?.users?.total },
+              { id: 'deposits', label: 'Aprovar Depósitos', icon: Wallet, count: stats?.deposits?.pending, urgent: true },
+              { id: 'withdrawals', label: 'Processar Saques', icon: ArrowUpRight, count: stats?.withdrawals?.pending, urgent: true },
+              { id: 'miners', label: 'Mineradoras', icon: Server, count: stats?.mining?.totalMiners },
+              { id: 'affiliates', label: 'Afiliados', icon: Crown, count: stats?.users?.withAffiliateLink },
               { id: 'settings', label: 'Configurações', icon: Settings },
               { id: 'logs', label: 'Logs', icon: FileText },
             ].map((item) => (
