@@ -99,6 +99,15 @@ interface Affiliate {
   };
 }
 
+interface AdminLog {
+  id: string; adminId: string; action: string;
+  entity: string; entityId: string | null;
+  oldValue: string | null; newValue: string | null;
+  description: string; ipAddress: string | null;
+  createdAt: string;
+  admin: { id: string; name: string; email: string } | null;
+}
+
 interface SystemConfig {
   id: string; key: string; value: string; type: string;
   description: string | null; category: string; isActive: boolean;
@@ -134,6 +143,8 @@ export function AdminTab() {
   const [allConfigs, setAllConfigs] = useState<SystemConfig[]>([]);
   const [affiliateLevels, setAffiliateLevels] = useState<AffiliateLevel[]>([]);
   const [logs, setLogs] = useState<AdminLog[]>([]);
+  const [logPage, setLogPage] = useState(1);
+  const [logTotalPages, setLogTotalPages] = useState(1);
   
   // Pagination
   const [userPage, setUserPage] = useState(1);
@@ -266,6 +277,24 @@ export function AdminTab() {
     }
   }, []);
 
+  const fetchLogs = useCallback(async () => {
+    try {
+      const params = new URLSearchParams({ 
+        page: logPage.toString(), 
+        limit: "30" 
+      });
+      const res = await fetch(`/api/admin/logs?${params}`);
+      const data = await res.json();
+      if (data.success) {
+        setLogs(data.logs);
+        setLogTotalPages(data.pagination.totalPages);
+      }
+    } catch (error) {
+      console.error("Error fetching logs:", error);
+      toast.error("Erro ao carregar logs");
+    }
+  }, [logPage]);
+
   const fetchConfigs = useCallback(async () => {
     try {
       const res = await fetch("/api/admin/config");
@@ -313,7 +342,8 @@ export function AdminTab() {
     else if (activeSection === 'miners') fetchMiners();
     else if (activeSection === 'affiliates') fetchAffiliates();
     else if (activeSection === 'settings') fetchConfigs();
-  }, [activeSection, fetchUsers, fetchDeposits, fetchWithdrawals, fetchMiners, fetchAffiliates, fetchConfigs]);
+    else if (activeSection === 'logs') fetchLogs();
+  }, [activeSection, fetchUsers, fetchDeposits, fetchWithdrawals, fetchMiners, fetchAffiliates, fetchConfigs, fetchLogs]);
 
   // ===== HANDLERS =====
   
@@ -745,6 +775,7 @@ export function AdminTab() {
               { id: 'miners', label: 'Mineradoras', icon: Server, count: stats?.mining.totalMiners },
               { id: 'affiliates', label: 'Afiliados', icon: Crown, count: stats?.users.withAffiliateLink },
               { id: 'settings', label: 'Configurações', icon: Settings },
+              { id: 'logs', label: 'Logs', icon: FileText },
             ].map((item) => (
               <Button
                 key={item.id}
@@ -1442,6 +1473,78 @@ export function AdminTab() {
     </div>
   );
 
+  const renderLogs = () => (
+    <div className="space-y-4">
+      <div className="flex justify-between items-center">
+        <h3 className="text-lg font-semibold text-white">Logs de Auditoria</h3>
+        <Button variant="outline" size="sm" onClick={() => fetchLogs()}>
+          <RefreshCw className="w-4 h-4" />
+        </Button>
+      </div>
+
+      {logs.length === 0 ? (
+        <Card className="bg-[#1a1a1a] border-white/10">
+          <CardContent className="py-12 text-center">
+            <FileText className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+            <p className="text-gray-400">Nenhum log encontrado</p>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="space-y-2">
+          {logs.map((log) => (
+            <Card key={log.id} className="bg-[#1a1a1a] border-white/10">
+              <CardContent className="p-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <Badge className={cn(
+                        "text-[10px]",
+                        log.action === 'create' && "bg-emerald-500/20 text-emerald-500",
+                        log.action === 'update' && "bg-blue-500/20 text-blue-500",
+                        log.action === 'delete' && "bg-red-500/20 text-red-500",
+                        log.action === 'approve' && "bg-emerald-500/20 text-emerald-500",
+                        log.action === 'reject' && "bg-red-500/20 text-red-500",
+                        !['create', 'update', 'delete', 'approve', 'reject'].includes(log.action) && "bg-gray-500/20 text-gray-400"
+                      )}>
+                        {log.action.toUpperCase()}
+                      </Badge>
+                      <Badge className="bg-amber-500/20 text-amber-400 text-[10px]">
+                        {log.entity}
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-white mt-1">{log.description}</p>
+                    <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                      {log.admin && (
+                        <span>Por: <span className="text-gray-300">{log.admin.name}</span></span>
+                      )}
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {formatDate(log.createdAt)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      {/* Pagination */}
+      {logTotalPages > 1 && (
+        <div className="flex justify-center gap-2">
+          <Button variant="ghost" size="sm" disabled={logPage === 1} onClick={() => setLogPage(p => p - 1)}>
+            <ChevronLeft className="w-4 h-4" />
+          </Button>
+          <span className="flex items-center text-sm text-gray-400">{logPage} / {logTotalPages}</span>
+          <Button variant="ghost" size="sm" disabled={logPage === logTotalPages} onClick={() => setLogPage(p => p + 1)}>
+            <ChevronRight className="w-4 h-4" />
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+
   // ===== MAIN RENDER =====
   return (
     <motion.div 
@@ -1466,6 +1569,7 @@ export function AdminTab() {
             {activeSection === 'miners' && 'Mineradoras'}
             {activeSection === 'affiliates' && 'Programa de Afiliados'}
             {activeSection === 'settings' && 'Configurações'}
+            {activeSection === 'logs' && 'Logs de Auditoria'}
           </h2>
           <p className="text-sm text-gray-400">
             {activeSection === 'dashboard' && 'Visão geral da plataforma'}
@@ -1490,6 +1594,7 @@ export function AdminTab() {
           {activeSection === 'miners' && renderMiners()}
           {activeSection === 'affiliates' && renderAffiliates()}
           {activeSection === 'settings' && renderSettings()}
+          {activeSection === 'logs' && renderLogs()}
         </>
       )}
 
